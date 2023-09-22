@@ -1,9 +1,10 @@
 <script setup>
+import vAddNewWord from './components/vAddNewWord.vue';
 </script>
 
 <template>
   
-  Learn_words
+  <vAddNewWord></vAddNewWord>
 
 </template>
 
