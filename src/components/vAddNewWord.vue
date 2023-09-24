@@ -8,6 +8,7 @@ const examples = ref(
 )
 
 const addNewWord = () => {
+    
   let newWord = {
     word: word.value,
     definition: definition.value,
@@ -15,6 +16,18 @@ const addNewWord = () => {
   }
 
   console.log(JSON.stringify(newWord))
+  console.log(create_pattern_to_replace_word(word.value))
+}
+
+const create_pattern_to_replace_word = (word) => {
+    let template = word.replace(/[a-zA-Z]/g, '_');
+    return template;
+}
+
+const replace_word = () => {
+    while(examples.value.includes(word.value)) {
+        examples.value = examples.value.replace(word.value, create_pattern_to_replace_word(word.value));
+    }
 }
 </script>
 
@@ -32,7 +45,7 @@ const addNewWord = () => {
     <textarea class="input" rows="5" name="" id="definition" v-model="definition"></textarea>
 
     <label class="example">Examples</label>
-    <textarea name="" id="example" rows="10" v-model="examples"></textarea>
+    <textarea name="" id="example" rows="10" v-model="examples" @change="replace_word()"></textarea>
 
     <button @click="addNewWord()">Send</button>
   </div>
