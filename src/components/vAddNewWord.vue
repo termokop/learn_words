@@ -40,6 +40,7 @@ const replace_word = () => {
 
 <template>
   <div class="add-new-word">
+    <p class="close-btn" @click="$emit('close')">X</p>
     <label for="word">Word</label>
     <input class="input" type="text" name="" id="word" v-model="word" />
     <select name="type" id="type" v-model="type">
@@ -67,6 +68,7 @@ const replace_word = () => {
   background-color: #3d3d3d;
   display: flex;
   flex-wrap: wrap;
+  position: fixed;
 }
 
 label {
@@ -91,6 +93,19 @@ button {
     font-size: 1.3rem;
     border-radius: 10px;
     margin-top: 15px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  background-color: rgba(255, 0, 0, 0.553);
+  text-align: center;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {

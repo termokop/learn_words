@@ -1,11 +1,13 @@
 <script setup>
 // import vAddNewWord from './components/vAddNewWord.vue'
-import vWordCard from './components/vWordCard.vue';
+// import vWordCard from './components/vWordCard.vue';
+import vMenu from './components/vMenu.vue';
 </script>
 
 <template>
   <!-- <vAddNewWord></vAddNewWord> -->
-  <vWordCard></vWordCard>
+  <!-- <vWordCard></vWordCard> -->
+  <v-menu></v-menu>
 </template>
 
 <style scoped></style>
