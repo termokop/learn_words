@@ -24,6 +24,12 @@ const addNewWord = () => {
   // words_arr.value.push(newWord)//// add code to add word to basedate
 
   // console.log(JSON.stringify(words_arr.value))
+
+  // if success --->
+  word.value = ''
+  definition.value = ''
+  examples.value= ''
+  type.value = 'noun'
 }
 
 const create_pattern_to_replace_word = (word) => {

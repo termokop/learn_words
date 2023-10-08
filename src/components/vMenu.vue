@@ -9,8 +9,10 @@ const showAddWord = ref(false)
 
 <template>
 
-<vAddNewWord v-if="showAddWord" @close="showAddWord = false"></vAddNewWord>
+    <vAddNewWord v-if="showAddWord" @close="showAddWord = false"></vAddNewWord>
 
-<button @click="showAddWord = !showAddWord">Add new word</button>
+    <button @click="showAddWord = !showAddWord">Add new word</button>
+
+    <button @click="this.$router.push('/practice')">Practice</button>
 
 </template>
