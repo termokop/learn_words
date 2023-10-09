@@ -7,6 +7,13 @@
 
     const lists = ref([])
 
+    const choosen_list = ref('')
+
+    const show_modal = list => {
+        showAddWord.value = !showAddWord.value;
+        choosen_list.value = list
+    }
+
 
     const getLists = async () => {// get topics from the server
 
@@ -48,15 +55,13 @@
 <template>
 
     <div class="lists">
+        <div class="title">Lists</div>
         <div class="list-element" v-for="list in lists" :key="list" >
             <div class="name-of-list">{{ list.name }}</div>
             <div class="amount-of-words">{{ list.amount_of_words }}</div>
-            <button @click="showAddWord = !showAddWord">Add new word</button>
-            
-            <vAddNewWord v-if="showAddWord" @close="showAddWord = false"></vAddNewWord>
-
-
+            <button @click=show_modal(list.name)>Add new word</button>
         </div>
+        <vAddNewWord :list-prop="choosen_list" v-if="showAddWord" @close="showAddWord = false"></vAddNewWord>
     </div>
 
 </template>
@@ -66,6 +71,14 @@
     .lists {
         width: 90vw;
         margin: auto;
+    }
+
+    .title {
+        width: fit-content;
+        margin: auto;
+        text-transform: uppercase;
+        font-size: 2rem;
+        font-weight: 700;
     }
     .list-element {
         margin: 10px;

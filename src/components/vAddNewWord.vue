@@ -1,6 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 
+defineProps({
+  listProp: String
+})
+
 const word = ref('initialize');
 const definition = ref('to make a computer program or system ready for use or format a disk');
 const examples = ref(
@@ -63,6 +67,8 @@ const replace_word = () => {
     <label class="example">Examples</label>
     <textarea name="" id="example" rows="10" v-model="examples" @change="replace_word()"></textarea>
 
+    <div class="list-name">({{ listProp }})</div>
+
     <button @click="addNewWord()">Add word</button>
   </div>
 </template>
@@ -75,6 +81,9 @@ const replace_word = () => {
   display: flex;
   flex-wrap: wrap;
   position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 label {
@@ -112,6 +121,13 @@ button {
   color: white;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.list-name {
+  color: #FFFFFF;
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
 }
 
 @media (max-width: 1024px) {
