@@ -49,31 +49,35 @@ const replace_word = () => {
 </script>
 
 <template>
-  <div class="add-new-word">
-    <p class="close-btn" @click="$emit('close')">X</p>
-    <label for="word">Word</label>
-    <input class="input" type="text" name="" id="word" v-model="word" />
-    <select name="type" id="type" v-model="type">
-      <option value="noun">noun</option>
-      <option value="verb">verb</option>
-      <option value="adjective">adjective</option>
-      <option value="adverb">adverb</option>
-      <option value="phrasal_verb">phrasal verb</option>
-    </select>
-
-    <label for="definition">Meaning</label>
-    <textarea class="input" rows="5" name="" id="definition" v-model="definition"></textarea>
-
-    <label class="example">Examples</label>
-    <textarea name="" id="example" rows="10" v-model="examples" @change="replace_word()"></textarea>
-
-    <div class="list-name">({{ listProp }})</div>
-
-    <button @click="addNewWord()">Add word</button>
-  </div>
+  <Transition>
+    <div class="add-new-word">
+      <p class="close-btn" @click="$emit('close')">X</p>
+      <label for="word">Word</label>
+      <input class="input" type="text" name="" id="word" v-model="word" />
+      <select name="type" id="type" v-model="type">
+        <option value="noun">noun</option>
+        <option value="verb">verb</option>
+        <option value="adjective">adjective</option>
+        <option value="adverb">adverb</option>
+        <option value="phrasal_verb">phrasal verb</option>
+      </select>
+  
+      <label for="definition">Meaning</label>
+      <textarea class="input" rows="5" name="" id="definition" v-model="definition"></textarea>
+  
+      <label class="example">Examples</label>
+      <textarea name="" id="example" rows="10" v-model="examples" @change="replace_word()"></textarea>
+  
+      <div class="list-name">({{ listProp }})</div>
+  
+      <button @click="addNewWord()">Add word</button>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
+
+
 .add-new-word {
   width: 350px;
   padding: 20px;

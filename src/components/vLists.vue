@@ -61,12 +61,24 @@
             <div class="amount-of-words">{{ list.amount_of_words }}</div>
             <button @click=show_modal(list.name)>Add new word</button>
         </div>
-        <vAddNewWord :list-prop="choosen_list" v-if="showAddWord" @close="showAddWord = false"></vAddNewWord>
+        <Transition>
+            <vAddNewWord :list-prop="choosen_list" v-if="showAddWord" @close="showAddWord = false"></vAddNewWord>
+        </Transition>
     </div>
 
 </template>
 
 <style scoped>
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 
     .lists {
         width: 90vw;
