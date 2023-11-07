@@ -87,10 +87,6 @@
     const check_ans = (word) => {
         if(word_ans.value === word) {
             correct_ans();
-            word_ans.value = ''
-            console.log(index.value)
-            if(words_arr.length-1<=index.value) finish_quiz()
-            else index.value++;
         }
         else wrong_ans();
     }
@@ -101,16 +97,19 @@
         revers_card.value = false;
     }
 
-    const finish_quiz = () => {
+    const finish_quiz = () => {  ////////////////////////////////// add functionality
         index.value = 0;
         console.log('finished')
     }
 
-    const correct_ans = () => {
+    const correct_ans = () => { ////////////////////////////////// add functionality (styles and animatiion)
+        word_ans.value = ''
+        if(words_arr.length-1<=index.value) finish_quiz()
+        else index.value++;
         alert('Correct');
     }
 
-    const wrong_ans = () => {
+    const wrong_ans = () => { ////////////////////////////////// add functionality (styles and animatiion)
         alert('Wrong')
     }
 
@@ -118,6 +117,7 @@
 
 <template>
     <div class="card">
+        <button class="close-btn" @click="this.$router.push('/')">x</button>
         <button class="reverse-btn" @click="revers_card=!revers_card"><svg fill="white" width="20px" height="20px" viewBox="-1 -4.5 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-refresh-reverse"><path d='M4.859 5.308l1.594-.488a1 1 0 0 1 .585 1.913l-3.825 1.17a1 1 0 0 1-1.249-.665L.794 3.413a1 1 0 1 1 1.913-.585l.44 1.441C5.555.56 10.332-1.035 14.573.703a9.381 9.381 0 0 1 5.38 5.831 1 1 0 1 1-1.905.608A7.381 7.381 0 0 0 4.86 5.308zm12.327 8.195l-1.775.443a1 1 0 1 1-.484-1.94l3.643-.909a.997.997 0 0 1 .61-.08 1 1 0 0 1 .84.75l.968 3.88a1 1 0 0 1-1.94.484l-.33-1.322a9.381 9.381 0 0 1-16.384-1.796l-.26-.634a1 1 0 1 1 1.851-.758l.26.633a7.381 7.381 0 0 0 13.001 1.25z' /></svg></button>
         <div class="word-card" v-if="!revers_card">
             <div class="word-answer">
@@ -146,7 +146,13 @@
                     </ul>
                 </div>
             </div>
-            <button class="check-ans" @click="check_ans(words_arr[index].word)">Check</button>
+            <button 
+                class="check-ans" 
+                @click="check_ans(words_arr[index].word)"
+                :disabled="!word_ans"
+            >
+                Check
+            </button>
         </div>
         <!-- Reverse card  -->
         <div class="word-card" v-if="revers_card">
@@ -202,20 +208,36 @@
     justify-content: center;
 }
 
-.reverse-btn {
-    width: 2.5rem;
-    height: 2.5rem;
+.reverse-btn, .close-btn {
+    width: 30px;
+    height: 30px;
     position: absolute;
-    top: 5px;
-    right: 5px;
     padding: 0;
     background-color: transparent;
     border-width: 0;
     border-radius: 50%;
 }
 
+.reverse-btn {
+    top: 8px;
+    right: 8px;
+}
+
+.close-btn {
+    top: 8px;
+    left: 8px;
+    font-size: 25px;
+    color: white;
+    background-color: darkred;
+
+}
+
 .reverse-btn:hover {
     background-color:  #3d3d3e;
+}
+
+.close-btn:hover {
+    background-color:  red;
 }
 
 .word-answer {
@@ -249,6 +271,10 @@ input:focus {
     border-width: 0;
     background-color: #3986d4;
     border-radius: 10px;
+}
+
+.check-ans:disabled {
+    background-color: gray;
 }
 
 .word-type {
