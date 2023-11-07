@@ -49,7 +49,6 @@ const replace_word = () => {
 </script>
 
 <template>
-  <Transition>
     <div class="add-new-word">
       <p class="close-btn" @click="$emit('close')">X</p>
       <label for="word">Word</label>
@@ -72,7 +71,6 @@ const replace_word = () => {
   
       <button @click="addNewWord()">Add word</button>
     </div>
-  </Transition>
 </template>
 
 <style scoped>
