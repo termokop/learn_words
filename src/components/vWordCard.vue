@@ -4,6 +4,7 @@
 
     const words = [
         {
+            id: 1,
             word: "circumstance",
             type: 'noun',
             definitions: [
@@ -17,6 +18,7 @@
             ]
         },
         {
+            id: 2,
             word: "initialize",
             type: 'noun',
             definitions: [
@@ -27,6 +29,23 @@
             ]
         },
         {
+            id: 3,
+            word: "perhaps",
+            type: 'adverb',
+            definitions: [
+                "Used when you want to make a statement or opinion less definite",
+                "Used when making a rough estimate",
+                "used when making a polite request, offer or suggestion",
+            ],
+            examples: [
+                "_______ it would be better if you came back tomorrow.",
+                "I think _______ you've had enough to drink tonight.",
+                "He had a difficult upbringing, which _______ explains why he behaves like that.",
+                "A change which could affect _______ 20 per cent of the population.",
+            ]
+        },
+        {
+            id: 4,
             word: "arbitrary",
             type: 'adjective',
             definitions: [
@@ -37,6 +56,19 @@
                 "The choice of players for the team seemed completely _________.",
                 "He makes unpredictable, _________ decisions.",
                 "the _________ powers of officials"
+            ]
+        },
+        {
+            id: 5,
+            word: "estimate",
+            type: 'verb',
+            definitions: [
+                "To form an idea of the cost, size, value etc. of something, but without calculating it exactly"
+            ],
+            examples: [
+                "We ________d (that) it would cost about €5 000.",
+                "It is hard to ________ how many children have dyslexia.",
+                "The satellite will cost an ________d £400 million."
             ]
         },
     ];
@@ -61,6 +93,12 @@
             else index.value++;
         }
         else wrong_ans();
+    }
+
+    const skip_word = () => {
+        if(words_arr.length-1<=index.value) finish_quiz()
+        else index.value++;
+        revers_card.value = false;
     }
 
     const finish_quiz = () => {
@@ -110,6 +148,7 @@
             </div>
             <button class="check-ans" @click="check_ans(words_arr[index].word)">Check</button>
         </div>
+        <!-- Reverse card  -->
         <div class="word-card" v-if="revers_card">
             <div class="word-answer">
                 <input type="text" name="word" id="word_ans" disabled :value="words_arr[index].word">
@@ -129,7 +168,7 @@
                     </ul>
                 </div>
             </div>
-            <button class="check-ans" @click="check_ans(words_arr[index].word)">Skip</button>
+            <button class="check-ans" @click="skip_word()">Skip</button>
         </div>
     
     </div>
