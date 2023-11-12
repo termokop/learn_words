@@ -275,6 +275,7 @@
     background-color: transparent;
     border-width: 0;
     border-radius: 50%;
+    z-index: 2;
 }
 
 .reverse-btn {
