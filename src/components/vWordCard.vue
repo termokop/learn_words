@@ -12,7 +12,7 @@
                 "the conditions of a person’s life, especially the money they have"
             ],
             examples: [
-                "I know I can trust her in any ____________.",
+                "I know I can trust her in any ____________s.",
                 "The amount paid will vary according to ____________s.",
                 "Her family/domestic ____________s"
             ]
