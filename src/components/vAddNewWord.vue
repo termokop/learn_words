@@ -6,9 +6,16 @@ defineProps({
 })
 
 const word = ref('initialize')
-const definition = ref('to make a computer program or system ready for use or format a disk')
+const definition = ref([
+  'to make a computer program or system ready for use or format a disk',
+  'definition #2',
+  'def #3'
+])
 const examples = ref(
-  'The other option is to initialize the hard drive and reload all your programs.'
+  [
+    'The other option is to initialize the hard drive and reload all your programs.',
+    'Second example'
+  ]
 )
 const type = ref('noun')
 
@@ -42,7 +49,7 @@ const addNewWord = async () => {
     console.log('Response:', responseData)
 
     word.value = ''
-    definition.value = ''
+    definition.value = ['']
     examples.value = ''
     type.value = 'noun'
 
@@ -63,6 +70,30 @@ const replace_word = () => {
     examples.value = examples.value.replace(word.value, create_pattern_to_replace_word(word.value))
   }
 }
+
+const add_new_meaning_item = () => {
+  definition.value.push('')
+}
+
+const remove_meaning_item = index => {
+  if(definition.value.length > 1) {
+    definition.value.splice(index, 1);
+  } else {
+    definition.value[0] = '';
+  }
+}
+
+const add_new_examples_item = () => {
+  examples.value.push('')
+}
+
+const remove_examples_item = index => {
+  if(examples.value.length > 1) {
+    examples.value.splice(index, 1);
+  } else {
+    examples.value[0] = '';
+  }
+}
 </script>
 
 <template>
@@ -78,15 +109,32 @@ const replace_word = () => {
       <option value="phrasal_verb">phrasal verb</option>
     </select>
 
-    <label for="definition">Meaning</label>
-    <textarea class="input" rows="5" name="" id="definition" v-model="definition"></textarea>
+    <!-- Meanings -->
 
-    <label class="example">Examples</label>
-    <textarea name="" id="example" rows="10" v-model="examples" @change="replace_word()"></textarea>
+    <div class="meanings">
+      <label for="definition">Meanings</label>
+      <div class="definition-item" v-for="(def, index) in definition" :key="index" >
+        <input v-model="definition[index]" class="definition-item-input"/>
+        <button class="delete-item" @click="remove_meaning_item(index)">x</button>
+      </div>
+      <button class="add-new-item" @click="add_new_meaning_item()">+</button>
+    </div>
+
+
+    <!--Examples-->
+
+    <div class="examples">
+      <label for="examples">Examples</label>
+      <div class="examples-item" v-for="(def, index) in examples" :key="index" >
+        <input v-model="examples[index]" class="examples-item-input"/>
+        <button class="delete-item" @click="remove_examples_item(index)">x</button>
+      </div>
+      <button class="add-new-item" @click="add_new_examples_item()">+</button>
+    </div>
 
     <div class="list-name">({{ listProp }})</div>
 
-    <button @click="addNewWord()">Add word</button>
+    <button @click="addNewWord()" class="add-word">Add word</button>
   </div>
 </template>
 
@@ -103,6 +151,29 @@ const replace_word = () => {
   transform: translate(-50%, -50%);
 }
 
+
+/* Meanings area*/
+.meanings, .examples {
+  width: 100%;
+}
+
+.definition-item, .examples-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+.definition-item-input, .examples-item-input {
+  width: 90%;
+}
+
+.delete-item {
+  border: none;
+  background-color: rgb(228, 46, 46);
+  border-radius: 50%;
+}
+
 label {
   width: 100%;
   color: white;
@@ -117,7 +188,7 @@ select {
   width: 50%;
 }
 
-button {
+.add-word {
   width: 50%;
   margin: auto;
   background-color: rgb(57, 177, 57);
