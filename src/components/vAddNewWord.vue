@@ -50,7 +50,7 @@ const addNewWord = async () => {
 
     word.value = ''
     definition.value = ['']
-    examples.value = ''
+    examples.value = ['']
     type.value = 'noun'
 
     return;
@@ -65,9 +65,9 @@ const create_pattern_to_replace_word = (word) => {
   return template
 }
 
-const replace_word = () => {
-  while (examples.value.includes(word.value)) {
-    examples.value = examples.value.replace(word.value, create_pattern_to_replace_word(word.value))
+const replace_word = index => {
+  while (examples.value[index].includes(word.value)) {
+    examples.value[index] = examples.value[index].replace(word.value, create_pattern_to_replace_word(word.value))
   }
 }
 
@@ -117,7 +117,9 @@ const remove_examples_item = index => {
         <input v-model="definition[index]" class="definition-item-input"/>
         <button class="delete-item" @click="remove_meaning_item(index)">x</button>
       </div>
-      <button class="add-new-item" @click="add_new_meaning_item()">+</button>
+      <div class="btns">
+        <button class="add-new-item" @click="add_new_meaning_item()">+</button>
+      </div>
     </div>
 
 
@@ -126,10 +128,12 @@ const remove_examples_item = index => {
     <div class="examples">
       <label for="examples">Examples</label>
       <div class="examples-item" v-for="(def, index) in examples" :key="index" >
-        <input v-model="examples[index]" class="examples-item-input"/>
+        <input v-model="examples[index]" class="examples-item-input" @change="replace_word(index)"/>
         <button class="delete-item" @click="remove_examples_item(index)">x</button>
       </div>
-      <button class="add-new-item" @click="add_new_examples_item()">+</button>
+      <div class="btns">
+        <button class="add-new-item" @click="add_new_examples_item()">+</button>
+      </div>
     </div>
 
     <div class="list-name">({{ listProp }})</div>
@@ -172,6 +176,17 @@ const remove_examples_item = index => {
   border: none;
   background-color: rgb(228, 46, 46);
   border-radius: 50%;
+}
+
+.btns {
+  width: 100%;
+  display: flex;
+  margin-top: 5px;
+}
+
+.add-new-item {
+  width: fit-content;
+  margin: auto;
 }
 
 label {
