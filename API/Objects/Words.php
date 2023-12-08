@@ -51,8 +51,8 @@ class Word
         // Injection
         $this->word = htmlspecialchars(strip_tags($this->word));
         $this->type = htmlspecialchars(strip_tags($this->type));
-        $this->definition = htmlspecialchars(strip_tags($this->definition));
-        $this->examples = htmlspecialchars(strip_tags($this->examples));
+        // $this->definition = htmlspecialchars(strip_tags($this->definition));
+        // $this->examples = htmlspecialchars(strip_tags($this->examples));
         $this->user_id = htmlspecialchars(strip_tags($this->user_id));
 
         // Bind params

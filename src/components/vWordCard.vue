@@ -1,84 +1,37 @@
 <script setup>
 
-    import { ref } from 'vue';
+    import { ref, onBeforeMount } from 'vue';
 
-    const words = [
-        {
-            id: 1,
-            word: "circumstance",
-            type: 'noun',
-            definitions: [
-                "the conditions and facts that are connected with and affect a situation, an event or an action",
-                "the conditions of a person’s life, especially the money they have"
-            ],
-            examples: [
-                "I know I can trust her in any ____________s.",
-                "The amount paid will vary according to ____________s.",
-                "Her family/domestic ____________s"
-            ]
-        },
-        {
-            id: 2,
-            word: "initialize",
-            type: 'noun',
-            definitions: [
-                "to make a computer program or system ready for use or format a disk",
-            ],
-            examples: [
-                "The other option is to __________ the hard drive and reload all your programs.",
-            ]
-        },
-        {
-            id: 3,
-            word: "perhaps",
-            type: 'adverb',
-            definitions: [
-                "Used when you want to make a statement or opinion less definite",
-                "Used when making a rough estimate",
-                "used when making a polite request, offer or suggestion",
-            ],
-            examples: [
-                "_______ it would be better if you came back tomorrow.",
-                "I think _______ you've had enough to drink tonight.",
-                "He had a difficult upbringing, which _______ explains why he behaves like that.",
-                "A change which could affect _______ 20 per cent of the population.",
-            ]
-        },
-        {
-            id: 4,
-            word: "arbitrary",
-            type: 'adjective',
-            definitions: [
-                "(of an action, a decision, a rule, etc.) not seeming to be based on a reason, system or plan and sometimes seeming unfair",
-                "Using power without limits and without considering other people"
-            ],
-            examples: [
-                "The choice of players for the team seemed completely _________.",
-                "He makes unpredictable, _________ decisions.",
-                "the _________ powers of officials"
-            ]
-        },
-        {
-            id: 5,
-            word: "estimate",
-            type: 'verb',
-            definitions: [
-                "To form an idea of the cost, size, value etc. of something, but without calculating it exactly"
-            ],
-            examples: [
-                "We ________d (that) it would cost about €5 000.",
-                "It is hard to ________ how many children have dyslexia.",
-                "The satellite will cost an ________d £400 million."
-            ]
-        },
-    ];
+    const getWords4Today = async (userID) => {
+        try {
+            const url = 'https://www.ukrge.site/learn_words/API/get_today_words.php'
+            const body = {
+                user_id: userID,
+            };
 
-    
-    const words_arr_json = JSON.stringify(words)///
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-type": 'application/json',
+                },
+                body: JSON.stringify(body)
+            });
+
+            const result = await response.json()
+            words_arr.value = result['list'];
+            console.log(words_arr.value)
+        }
+        catch (error) {
+            console.error(error)
+        }
+    }
+
+    onBeforeMount(() => {
+        getWords4Today(1)
+    })
+
     const index = ref(0)
-    let words_arr = JSON.parse(words_arr_json)
-
-    console.log(words_arr)
+    const words_arr = ref([]);
 
     const revers_card = ref(false)
 
@@ -92,7 +45,7 @@
     }
 
     const skip_word = () => {
-        if(words_arr.length-1<=index.value) finish_quiz()
+        if(words_arr.value.length-1<=index.value) finish_quiz()
         else index.value++;
         revers_card.value = false;
     }
@@ -104,7 +57,7 @@
 
     const correct_ans = () => { ////////////////////////////////// add functionality (styles and animatiion)
         word_ans.value = ''
-        if(words_arr.length-1<=index.value) finish_quiz()
+        if(words_arr.value.length-1<=index.value) finish_quiz()
         else index.value++;
         alert('Correct');
     }
@@ -116,8 +69,8 @@
 </script>
 
 <template>
-    <Transition mode="out">
-    <div class="card"  v-if="!revers_card">
+    <Transition>
+    <div class="card"  v-if="!revers_card && words_arr.length">
         <button class="close-btn" @click="this.$router.push('/')">x</button>
         <button class="reverse-btn" @click="revers_card=!revers_card"><svg fill="white" width="20px" height="20px" viewBox="-1 -4.5 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-refresh-reverse"><path d='M4.859 5.308l1.594-.488a1 1 0 0 1 .585 1.913l-3.825 1.17a1 1 0 0 1-1.249-.665L.794 3.413a1 1 0 1 1 1.913-.585l.44 1.441C5.555.56 10.332-1.035 14.573.703a9.381 9.381 0 0 1 5.38 5.831 1 1 0 1 1-1.905.608A7.381 7.381 0 0 0 4.86 5.308zm12.327 8.195l-1.775.443a1 1 0 1 1-.484-1.94l3.643-.909a.997.997 0 0 1 .61-.08 1 1 0 0 1 .84.75l.968 3.88a1 1 0 0 1-1.94.484l-.33-1.322a9.381 9.381 0 0 1-16.384-1.796l-.26-.634a1 1 0 1 1 1.851-.758l.26.633a7.381 7.381 0 0 0 13.001 1.25z' /></svg></button>
 
@@ -138,7 +91,7 @@
                     <div class="word-definition"> 
                         Definitions:
                         <ul>
-                            <li v-for="definition in words_arr[index].definitions" :key="definition"> {{ definition }}</li>
+                            <li v-for="definition in words_arr[index].definition" :key="definition"> {{ definition }}</li>
                         </ul>
                     </div>
                     <div class="word-examples">
@@ -159,8 +112,8 @@
     </div>
     </Transition>
 
-    <Transition mode="out-in">
-    <div class="card" v-if="revers_card">
+    <Transition>
+    <div class="card" v-if="revers_card  && words_arr.length">
         <button class="close-btn" @click="this.$router.push('/')">x</button>
         <button class="reverse-btn" @click="revers_card=!revers_card"><svg fill="white" width="20px" height="20px" viewBox="-1 -4.5 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin" class="jam jam-refresh-reverse"><path d='M4.859 5.308l1.594-.488a1 1 0 0 1 .585 1.913l-3.825 1.17a1 1 0 0 1-1.249-.665L.794 3.413a1 1 0 1 1 1.913-.585l.44 1.441C5.555.56 10.332-1.035 14.573.703a9.381 9.381 0 0 1 5.38 5.831 1 1 0 1 1-1.905.608A7.381 7.381 0 0 0 4.86 5.308zm12.327 8.195l-1.775.443a1 1 0 1 1-.484-1.94l3.643-.909a.997.997 0 0 1 .61-.08 1 1 0 0 1 .84.75l.968 3.88a1 1 0 0 1-1.94.484l-.33-1.322a9.381 9.381 0 0 1-16.384-1.796l-.26-.634a1 1 0 1 1 1.851-.758l.26.633a7.381 7.381 0 0 0 13.001 1.25z' /></svg></button>
         <!-- Reverse card  -->
@@ -174,7 +127,7 @@
                     <div class="word-definition"> 
                         Definitions:
                         <ul>
-                            <li v-for="definition in words_arr[index].definitions" :key="definition"> {{ definition }}</li>
+                            <li v-for="definition in words_arr[index].definition" :key="definition"> {{ definition }}</li>
                         </ul>
                     </div>
                     <div class="word-examples">
@@ -243,17 +196,17 @@
 .card {
     width: 90vw;
     height: 90vh;
-    margin: auto;
+    margin: 0;
     background-color: #1d1d1d;
     display: flex;
     align-content: center;
-    position: absolute;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     border-radius: 20px;
     color: white;
+    overflow: hidden;
 }
 
 .word-card {

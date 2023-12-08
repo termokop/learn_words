@@ -1,12 +1,10 @@
 <?php
 
 header("Content-Type: application/json; charset=UTF-8");
+
 function cors() {//------------------------------------------------------------------------------
     
-    // Allow from any origin
     if (isset($_SERVER['HTTP_ORIGIN'])) {
-        // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
-        // you want to allow, and if so:
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header("Content-Type: application/json; charset=UTF-8");
         header('Access-Control-Allow-Credentials: true');
@@ -28,46 +26,28 @@ function cors() {//-------------------------------------------------------------
 }
 cors();
 
-
-// Files to connect to DB
 include_once "./Config/Database.php";
-include_once "./Objects/Words.php";
 
-// Get connection to DB
+//з'єднуємося з базою даних
 $database = new Database();
 $db = $database->getConnection();
 
-// creare object 'Word'
-$new_word = new Word($db);
 
-// Get data through RESTFULL Api
-$data = json_decode(file_get_contents("php://input"));
+$sql = "SELECT * FROM words WHERE added_date = '2023-12-07' AND user_id = 1";
+$result = $database->conn->query($sql);
 
-        // set values
-        $new_word->word = $data->word;
-        $new_word->type = $data->type;
-        $new_word->definition = json_encode($data->definition);
-        $new_word->examples = json_encode($data->examples);
-        $new_word->user_id = $data->user_id;
-        if ($new_word->add()) {
+$i = 0;
+$arr = [];
+while($row = $result->fetch(PDO::FETCH_ASSOC)){
+    $arr[$i] = $row;
+    $arr[$i]['definition'] = json_decode($arr[$i]['definition']);
+    $arr[$i]['examples'] = json_decode($arr[$i]['examples']);
+    $i++;
+}
 
- http_response_code(200);
-  
- // JSON-respond
- echo json_encode(
-     array(
-         "message" => "Done",
-     )
- );
 
-        }
-
-        // msg if cannot to add word
-        else {
-
-            // respond code
-            http_response_code(401);
-
-            // sjow error msg
-            echo json_encode(array("message" => "Fail test"));
-        }
+echo json_encode(
+    array(
+        "list" => $arr,
+    )
+    );
