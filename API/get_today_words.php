@@ -32,12 +32,53 @@ include_once "./Config/Database.php";
 $database = new Database();
 $db = $database->getConnection();
 
+$arr = [];
+$i = 0;
 
-$sql = "SELECT * FROM words WHERE added_date = '2023-12-07' AND user_id = 1";
+$database->conn->query("SET time_zone = '-07:00");
+$sql = "SELECT * FROM words WHERE DATE(first_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_first_done = 0;";
 $result = $database->conn->query($sql);
 
-$i = 0;
-$arr = [];
+while($row = $result->fetch(PDO::FETCH_ASSOC)){
+    $arr[$i] = $row;
+    $arr[$i]['definition'] = json_decode($arr[$i]['definition']);
+    $arr[$i]['examples'] = json_decode($arr[$i]['examples']);
+    $i++;
+}
+
+$sql = "SELECT * FROM words WHERE DATE(second_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_second_done = 0;";
+$result = $database->conn->query($sql);
+
+while($row = $result->fetch(PDO::FETCH_ASSOC)){
+    $arr[$i] = $row;
+    $arr[$i]['definition'] = json_decode($arr[$i]['definition']);
+    $arr[$i]['examples'] = json_decode($arr[$i]['examples']);
+    $i++;
+}
+
+$sql = "SELECT * FROM words WHERE DATE(third_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_third_done = 0;";
+$result = $database->conn->query($sql);
+
+while($row = $result->fetch(PDO::FETCH_ASSOC)){
+    $arr[$i] = $row;
+    $arr[$i]['definition'] = json_decode($arr[$i]['definition']);
+    $arr[$i]['examples'] = json_decode($arr[$i]['examples']);
+    $i++;
+}
+
+$sql = "SELECT * FROM words WHERE DATE(fourth_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_fourth_done = 0;";
+$result = $database->conn->query($sql);
+
+while($row = $result->fetch(PDO::FETCH_ASSOC)){
+    $arr[$i] = $row;
+    $arr[$i]['definition'] = json_decode($arr[$i]['definition']);
+    $arr[$i]['examples'] = json_decode($arr[$i]['examples']);
+    $i++;
+}
+
+$sql = "SELECT * FROM words WHERE DATE(fiveth_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_fiveth_done = 0;";
+$result = $database->conn->query($sql);
+
 while($row = $result->fetch(PDO::FETCH_ASSOC)){
     $arr[$i] = $row;
     $arr[$i]['definition'] = json_decode($arr[$i]['definition']);

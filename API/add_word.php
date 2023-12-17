@@ -40,6 +40,15 @@ $db = $database->getConnection();
 // creare object 'Word'
 $new_word = new Word($db);
 
+$current_day = 0;
+
+$words_in_the_day = $new_word->get_number_of_words_for_the_day($current_day);
+
+// while($words_in_the_day <= 5) {
+    
+// }
+
+
 // Get data through RESTFULL Api
 $data = json_decode(file_get_contents("php://input"));
 
@@ -49,7 +58,7 @@ $data = json_decode(file_get_contents("php://input"));
         $new_word->definition = json_encode($data->definition);
         $new_word->examples = json_encode($data->examples);
         $new_word->user_id = $data->user_id;
-        if ($new_word->add()) {
+        if ($new_word->add($current_day)) {
 
  http_response_code(200);
   
@@ -69,5 +78,5 @@ $data = json_decode(file_get_contents("php://input"));
             http_response_code(401);
 
             // sjow error msg
-            echo json_encode(array("message" => "Fail test"));
+            echo json_encode(array("message" => "Fail"));
         }

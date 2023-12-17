@@ -5,17 +5,10 @@ defineProps({
   listProp: String
 })
 
-const word = ref('initialize')
-const definition = ref([
-  'to make a computer program or system ready for use or format a disk',
-  'definition #2',
-  'def #3'
-])
+const word = ref('')
+const definition = ref([''])
 const examples = ref(
-  [
-    'The other option is to initialize the hard drive and reload all your programs.',
-    'Second example'
-  ]
+  ['']
 )
 const type = ref('noun')
 
