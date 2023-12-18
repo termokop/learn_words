@@ -44,9 +44,16 @@ $current_day = 0;
 
 $words_in_the_day = $new_word->get_number_of_words_for_the_day($current_day);
 
-// while($words_in_the_day <= 5) {
-    
-// }
+// print_r($words_in_the_day);
+
+while(true) {
+    $words_in_the_day = $new_word->get_number_of_words_for_the_day($current_day);
+    if($words_in_the_day >= 5) {
+        $current_day++;
+    } else {
+        break;
+    }
+}
 
 
 // Get data through RESTFULL Api

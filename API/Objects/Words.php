@@ -75,9 +75,7 @@ class Word
     }
     
     public function get_number_of_words_for_the_day($add_days) {
-        
-        $add_days--; // to prevent 1 day difference
-        
+        $this->conn->query("SET time_zone = '-07:00");
         $query = "SELECT COUNT(*) AS row_count 
                     FROM " . $this->table_name . "
                     WHERE first_rep_date = DATE_ADD(CURDATE(), INTERVAL " . $add_days . " DAY);";
@@ -92,7 +90,7 @@ class Word
         // Fetch the result
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         
-        return $result;
+        return $result[row_count];
     }
     
 }
