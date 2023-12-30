@@ -1,5 +1,6 @@
 <?php
 
+
 class Word
 {
     // connect to table 'words'
@@ -75,10 +76,14 @@ class Word
     }
     
     public function get_number_of_words_for_the_day($add_days) {
-        $this->conn->query("SET time_zone = '-07:00");
+        
+        date_default_timezone_set('America/Edmonton');
+        $current_date = date('Y-m-d');
+        $new_date = date('Y-m-d', strtotime($current_date . ' + '. $add_days .' days'));
+        
         $query = "SELECT COUNT(*) AS row_count 
                     FROM " . $this->table_name . "
-                    WHERE first_rep_date = DATE_ADD(CURDATE(), INTERVAL " . $add_days . " DAY);";
+                    WHERE first_rep_date = '$new_date';";
 
         $statement = $this->conn->prepare($query);
         
@@ -91,6 +96,84 @@ class Word
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         
         return $result[row_count];
+    }
+    
+    public function save_progress($user_id, $id) {
+        
+        date_default_timezone_set('America/Edmonton');
+        $current_date = date('Y-m-d');
+        $query = "
+            SELECT * FROM " . $this->table_name . " WHERE user_id = '$user_id' AND id = '$id';";
+        
+        $statement = $this->conn->prepare($query);
+
+        $statement->execute();
+        
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        if(strval($result['first_rep_date']) == strval($current_date)) {
+            $query1 = "
+                        UPDATE " . $this->table_name . "
+                        SET is_first_done = 1
+                        WHERE user_id = '$user_id' AND id = '$id'";
+                        
+            $statement1 = $this->conn->prepare($query1);
+
+            $statement1->execute();
+            
+            $statement1->fetch(PDO::FETCH_ASSOC);
+            return true;
+        } elseif (strval($result['second_rep_date']) == strval($current_date)) {
+                        $query2 = "
+                        UPDATE " . $this->table_name . "
+                        SET is_second_done = 1
+                        WHERE user_id = '$user_id' AND id = '$id'";
+                        
+            $statement2 = $this->conn->prepare($query2);
+
+            $statement2->execute();
+            
+            $statement2->fetch(PDO::FETCH_ASSOC);
+            return true;
+        } elseif (strval($result['third_rep_date']) == strval($current_date)) {
+                        $query2 = "
+                        UPDATE " . $this->table_name . "
+                        SET is_third_done = 1
+                        WHERE user_id = '$user_id' AND id = '$id'";
+                        
+            $statement2 = $this->conn->prepare($query2);
+
+            $statement2->execute();
+            
+            $statement2->fetch(PDO::FETCH_ASSOC);
+            return true;
+        } elseif (strval($result['fourth_rep_date']) == strval($current_date)) {
+                        $query2 = "
+                        UPDATE " . $this->table_name . "
+                        SET is_fourth_done = 1
+                        WHERE user_id = '$user_id' AND id = '$id'";
+                        
+            $statement2 = $this->conn->prepare($query2);
+
+            $statement2->execute();
+            
+            $statement2->fetch(PDO::FETCH_ASSOC);
+            return true;
+        } elseif (strval($result['fiveth_rep_date']) == strval($current_date)) {
+                        $query2 = "
+                        UPDATE " . $this->table_name . "
+                        SET is_fiveth_done = 1
+                        WHERE user_id = '$user_id' AND id = '$id'";
+                        
+            $statement2 = $this->conn->prepare($query2);
+
+            $statement2->execute();
+            
+            $statement2->fetch(PDO::FETCH_ASSOC);
+            return true;
+        }
+        
+        return false;
     }
     
 }

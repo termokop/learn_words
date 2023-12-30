@@ -32,11 +32,14 @@ include_once "./Config/Database.php";
 $database = new Database();
 $db = $database->getConnection();
 
+$database->conn->query("SET time_zone = '-07:00");
+
 $arr = [];
 $i = 0;
 
-$database->conn->query("SET time_zone = '-07:00");
-$sql = "SELECT * FROM words WHERE DATE(first_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_first_done = 0;";
+$currentDate = date("Y-m-d");
+
+$sql = "SELECT * FROM words WHERE DATE(first_rep_date) = '$currentDate' AND user_id = 1 AND is_first_done = 0;";
 $result = $database->conn->query($sql);
 
 while($row = $result->fetch(PDO::FETCH_ASSOC)){
@@ -46,7 +49,7 @@ while($row = $result->fetch(PDO::FETCH_ASSOC)){
     $i++;
 }
 
-$sql = "SELECT * FROM words WHERE DATE(second_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_second_done = 0;";
+$sql = "SELECT * FROM words WHERE DATE(second_rep_date) = '$currentDate' AND user_id = 1 AND is_second_done = 0;";
 $result = $database->conn->query($sql);
 
 while($row = $result->fetch(PDO::FETCH_ASSOC)){
@@ -56,7 +59,7 @@ while($row = $result->fetch(PDO::FETCH_ASSOC)){
     $i++;
 }
 
-$sql = "SELECT * FROM words WHERE DATE(third_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_third_done = 0;";
+$sql = "SELECT * FROM words WHERE DATE(third_rep_date) = '$currentDate' AND user_id = 1 AND is_third_done = 0;";
 $result = $database->conn->query($sql);
 
 while($row = $result->fetch(PDO::FETCH_ASSOC)){
@@ -66,7 +69,7 @@ while($row = $result->fetch(PDO::FETCH_ASSOC)){
     $i++;
 }
 
-$sql = "SELECT * FROM words WHERE DATE(fourth_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_fourth_done = 0;";
+$sql = "SELECT * FROM words WHERE DATE(fourth_rep_date) = '$currentDate' AND user_id = 1 AND is_fourth_done = 0;";
 $result = $database->conn->query($sql);
 
 while($row = $result->fetch(PDO::FETCH_ASSOC)){
@@ -76,7 +79,7 @@ while($row = $result->fetch(PDO::FETCH_ASSOC)){
     $i++;
 }
 
-$sql = "SELECT * FROM words WHERE DATE(fiveth_rep_date) = DATE(DATE_ADD(NOW(), INTERVAL 0 DAY)) AND user_id = 1 AND is_fiveth_done = 0;";
+$sql = "SELECT * FROM words WHERE DATE(fiveth_rep_date) = '$currentDate' AND user_id = 1 AND is_fiveth_done = 0;";
 $result = $database->conn->query($sql);
 
 while($row = $result->fetch(PDO::FETCH_ASSOC)){

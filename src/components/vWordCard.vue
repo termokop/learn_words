@@ -37,9 +37,9 @@
 
     const word_ans = ref('')
 
-    const check_ans = (word) => {
-        if(word_ans.value === word) {
-            correct_ans();
+    const check_ans = (wordObj) => {
+        if(word_ans.value === wordObj.word) {
+            correct_ans(wordObj);
         }
         else wrong_ans();
     }
@@ -52,10 +52,46 @@
 
     const finish_quiz = () => {  ////////////////////////////////// add functionality
         index.value = 0;
-        console.log('finished')
+        this.$router.push('/');
     }
 
-    const correct_ans = () => { ////////////////////////////////// add functionality (styles and animatiion)
+    const saveWordProgress = async (word_done) => {
+
+        try {
+        const url = 'https://www.ukrge.site/learn_words/API/save_word_progress.php'
+
+
+        console.log(JSON.stringify(word_done))
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(word_done)
+        })
+
+        if(!response.ok) {
+            throw new Error('Network is not ok.')
+        }
+
+        const responseData = await response.json();
+        console.log('Response:', responseData)
+
+        return;
+        } catch (error) {
+        console.error('Error', error.message);
+        throw error;
+        }
+    }  
+
+    const correct_ans = async (wordObj) => { ////////////////////////////////// add functionality (styles and animatiion) передавати об'єктб і при правильній відповіді відправляти об'єкт на сервер.
+        const word_done = {
+            id: wordObj.id,
+            user_id: wordObj.user_id,
+        }
+        await saveWordProgress(word_done)
+
         word_ans.value = ''
         if(words_arr.value.length-1<=index.value) finish_quiz()
         else index.value++;
@@ -78,7 +114,7 @@
                 <div class="word-answer">
                     <input 
                         autofocus 
-                        @keydown.enter="check_ans(words_arr[index].word)" 
+                        @keydown.enter="check_ans(words_arr[index])" 
                         type="text" 
                         name="word" 
                         id="word" 
@@ -103,7 +139,7 @@
                 </div>
                 <button 
                     class="check-ans" 
-                    @click="check_ans(words_arr[index].word)"
+                    @click="check_ans(words_arr[index])"
                     :disabled="!word_ans"
                 >
                     Check
